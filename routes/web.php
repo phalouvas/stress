@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/token/show', [App\Http\Controllers\HomeController::class, 'showToken']);
+Route::post('/token/update', [App\Http\Controllers\HomeController::class, 'updateToken']);

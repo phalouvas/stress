@@ -2028,90 +2028,88 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       isLoading: true,
-      token: null,
-      tests: [{
+      user: {
         id: 0,
-        name: "Get Balance",
-        rate: 1,
-        type: "get",
-        endpoint: "".concat("https://msas.local.intergo.co", "/api/balance"),
-        is_running: false,
-        status: null,
-        hits: 0,
-        duration: null,
-        timer: null,
-        data: {}
-      }, {
-        id: 1,
-        name: "Verify Number",
-        rate: 1,
-        type: "post",
-        endpoint: "".concat("https://smsto-api.local.intergo.co", "/api/v1/verify/number"),
-        is_running: false,
-        status: null,
-        hits: 0,
-        duration: null,
-        timer: null,
-        data: {
-          to: "+35799000000"
-        }
-      }, {
-        id: 2,
-        name: "Get Lists",
-        rate: 1,
-        type: "get",
-        endpoint: "".concat("https://smsto-api.local.intergo.co", "/v1/people/lists"),
-        is_running: false,
-        status: null,
-        hits: 0,
-        duration: null,
-        timer: null,
-        data: {}
-      }, {
-        id: 3,
-        name: "Create a new list",
-        rate: 1,
-        type: "post",
-        endpoint: "".concat("https://smsto-api.local.intergo.co", "/v1/people/lists/create"),
-        is_running: false,
-        status: null,
-        hits: 0,
-        duration: null,
-        timer: null,
-        data: {
-          name: "Stress",
-          description: "For stress test"
-        }
-      }, {
-        id: 4,
-        name: "Get messages",
-        rate: 1,
-        type: "get",
-        endpoint: "".concat("https://msms.local.intergo.co", "/messages"),
-        is_running: false,
-        status: null,
-        hits: 0,
-        duration: null,
-        timer: null,
-        data: {}
-      }, {
-        id: 5,
-        name: "XXX",
-        rate: 1,
-        type: "get",
-        endpoint: "".concat("https://msms.local.intergo.co", "/v1/balance"),
-        is_running: false,
-        status: null,
-        hits: 0,
-        duration: null,
-        timer: null,
-        data: {}
-      }]
+        endpoint_webapp: null,
+        endpoint_msas: null,
+        endpoint_msms: null
+      },
+      tests: []
     };
+  },
+  computed: {
+    endpoint_webapp: function endpoint_webapp() {
+      if (this.user.id == 0) {
+        return null;
+      }
+
+      return this.user.endpoint_webapp;
+    },
+    endpoint_msms: function endpoint_msms() {
+      if (this.user.id == 0) {
+        return null;
+      }
+
+      return this.user.endpoint_msms;
+    },
+    endpoint_msas: function endpoint_msas() {
+      if (this.user.id == 0) {
+        return null;
+      }
+
+      return this.user.endpoint_msas;
+    }
   },
   mounted: function mounted() {
     this.load();
@@ -2122,18 +2120,93 @@ __webpack_require__.r(__webpack_exports__);
 
       this.isLoading = true;
       axios.get("token/show").then(function (res) {
-        _this.token = res.data;
+        _this.user = res.data;
+
+        _this.setTests();
       })["catch"](function (error) {//
       })["finally"](function () {
         _this.isLoading = false;
       });
+    },
+    setTests: function setTests() {
+      this.tests = [{
+        id: 0,
+        name: "Get Balance",
+        rate: 1,
+        type: "get",
+        endpoint: "".concat(this.endpoint_msas, "/api/balance"),
+        is_running: false,
+        status: null,
+        hits: 0,
+        duration: 0,
+        speed: 0,
+        timer: null,
+        payload: {}
+      }, {
+        id: 1,
+        name: "Verify Number",
+        rate: 1,
+        type: "post",
+        endpoint: "".concat(this.endpoint_webapp, "/api/v1/verify/number"),
+        is_running: false,
+        status: null,
+        hits: 0,
+        duration: 0,
+        speed: 0,
+        timer: null,
+        payload: {
+          to: "+35799000000"
+        }
+      }, {
+        id: 2,
+        name: "Get Lists",
+        rate: 1,
+        type: "get",
+        endpoint: "".concat(this.endpoint_webapp, "/v1/people/lists"),
+        is_running: false,
+        status: null,
+        hits: 0,
+        duration: 0,
+        speed: 0,
+        timer: null,
+        payload: {}
+      }, {
+        id: 3,
+        name: "Create a new list",
+        rate: 1,
+        type: "post",
+        endpoint: "".concat(this.endpoint_webapp, "/v1/people/lists/create"),
+        is_running: false,
+        status: null,
+        hits: 0,
+        duration: 0,
+        speed: 0,
+        timer: null,
+        payload: {
+          name: "Stress",
+          description: "For stress test"
+        }
+      }, {
+        id: 4,
+        name: "Get messages",
+        rate: 1,
+        type: "get",
+        endpoint: "".concat(this.endpoint_msms, "/messages"),
+        is_running: false,
+        status: null,
+        hits: 0,
+        duration: 0,
+        speed: 0,
+        timer: null,
+        payload: {}
+      }];
     },
     update: function update() {
       var _this2 = this;
 
       this.isLoading = true;
       axios.post("token/update", {
-        token: this.token
+        user: this.user
       }).then(function (res) {//
       })["catch"](function (error) {//
       })["finally"](function () {
@@ -2144,61 +2217,39 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       test.is_running = true;
-      var interval = 1000 / parseInt(test.rate);
+      axios.post('start', test).then(function (res) {
+        _this3.tests[test.id].status = res.status;
+      })["catch"](function (error) {
+        _this3.tests[test.id].status = error;
+      })["finally"](function () {//
+      });
       test.timer = setInterval(function () {
-        switch (test.type) {
-          case "get":
-            _this3.get(test);
-
-            break;
-
-          case "post":
-            _this3.post(test);
-
-            break;
-
-          default:
-        }
-      }, interval);
+        _this3.status(test);
+      }, 5000);
     },
     stop: function stop(test) {
-      test.is_running = false;
-      clearInterval(test.timer);
-    },
-    get: function get(test) {
       var _this4 = this;
 
-      var startTime = new Date().getTime();
-      axios.get(test.endpoint, {
-        headers: {
-          Authorization: "Bearer ".concat(this.token)
-        }
-      }).then(function (res) {
+      clearInterval(test.timer);
+      test.is_running = false;
+      axios.post('stop', test).then(function (res) {
         _this4.tests[test.id].status = res.status;
       })["catch"](function (error) {
         _this4.tests[test.id].status = error;
-      })["finally"](function () {
-        _this4.tests[test.id].hits = _this4.tests[test.id].hits + 1;
-        var endTime = new Date().getTime();
-        _this4.tests[test.id].duration = endTime - startTime;
+      })["finally"](function () {//
       });
     },
-    post: function post(test) {
+    status: function status(test) {
       var _this5 = this;
 
-      var startTime = new Date().getTime();
-      axios.post(test.endpoint, test.data, {
-        headers: {
-          Authorization: "Bearer ".concat(this.token)
-        }
-      }).then(function (res) {
-        _this5.tests[test.id].status = res.status;
+      axios.post('status', test).then(function (res) {
+        _this5.tests[test.id].status = res.data.status;
+        _this5.tests[test.id].duration = res.data.duration;
+        _this5.tests[test.id].speed = res.data.hits - _this5.tests[test.id].hits;
+        _this5.tests[test.id].hits = res.data.hits;
       })["catch"](function (error) {
         _this5.tests[test.id].status = error;
-      })["finally"](function () {
-        _this5.tests[test.id].hits = _this5.tests[test.id].hits + 1;
-        var endTime = new Date().getTime();
-        _this5.tests[test.id].duration = endTime - startTime;
+      })["finally"](function () {//
       });
     }
   }
@@ -37805,191 +37856,318 @@ var render = function() {
         )
       : _vm._e(),
     _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-6" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [_vm._v("Settings")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col" }, [
-                _c("label", { attrs: { for: "name" } }, [_vm._v("Token")]),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-group mb-3" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.token,
-                        expression: "token"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      id: "token",
-                      name: "token",
-                      placeholder: "Token..."
-                    },
-                    domProps: { value: _vm.token },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+    !_vm.isLoading
+      ? _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col" }, [
+            _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-header" }, [_vm._v("Settings")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-4" }, [
+                    _c("label", { attrs: { for: "name" } }, [_vm._v("Token")]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-group mb-3" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.user.token,
+                            expression: "user.token"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          id: "token",
+                          name: "token",
+                          placeholder: "Token..."
+                        },
+                        domProps: { value: _vm.user.token },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.user, "token", $event.target.value)
+                          }
                         }
-                        _vm.token = $event.target.value
-                      }
-                    }
-                  }),
+                      })
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col" }, [
+                    _c("label", { attrs: { for: "name" } }, [
+                      _vm._v("Endpoint Web")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-group mb-3" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.user.endpoint_webapp,
+                            expression: "user.endpoint_webapp"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          id: "endpoint_webapp",
+                          name: "endpoint_webapp",
+                          placeholder: "Url..."
+                        },
+                        domProps: { value: _vm.user.endpoint_webapp },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.user,
+                              "endpoint_webapp",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col" }, [
+                    _c("label", { attrs: { for: "name" } }, [
+                      _vm._v("Endpoint Messages")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-group mb-3" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.user.endpoint_msms,
+                            expression: "user.endpoint_msms"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          id: "endpoint_msms",
+                          name: "endpoint_msms",
+                          placeholder: "Url..."
+                        },
+                        domProps: { value: _vm.user.endpoint_msms },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.user,
+                              "endpoint_msms",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col" }, [
+                    _c("label", { attrs: { for: "name" } }, [
+                      _vm._v("Endpoint Auth")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-group mb-3" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.user.endpoint_msas,
+                            expression: "user.endpoint_msas"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          id: "endpoint_msas",
+                          name: "endpoint_msas",
+                          placeholder: "Url..."
+                        },
+                        domProps: { value: _vm.user.endpoint_msas },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.user,
+                              "endpoint_msas",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { id: "updateToken", name: "updateToken" },
+                    on: { click: _vm.update }
+                  },
+                  [
+                    _c("i", { staticClass: "fas fa-save" }),
+                    _vm._v(" Save\n                ")
+                  ]
+                )
+              ])
+            ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    !_vm.isLoading
+      ? _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col" }, [
+            _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-header" }, [_vm._v("Tests")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("table", { staticClass: "table" }, [
+                  _vm._m(1),
                   _vm._v(" "),
                   _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary",
-                      attrs: { id: "updateToken", name: "updateToken" },
-                      on: { click: _vm.update }
-                    },
-                    [
-                      _c("i", { staticClass: "fas fa-save" }),
-                      _vm._v(" Save\n                ")
-                    ]
+                    "tbody",
+                    _vm._l(_vm.tests, function(test) {
+                      return _c("tr", { key: test.id }, [
+                        _c("th", { attrs: { scope: "row" } }, [
+                          _vm._v(_vm._s(test.id))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(test.name))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: test.rate,
+                                expression: "test.rate"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "number",
+                              placeholder: "Rate...",
+                              step: "1",
+                              min: "1"
+                            },
+                            domProps: { value: test.rate },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(test, "rate", $event.target.value)
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "btn-group",
+                              attrs: {
+                                role: "group",
+                                "aria-label": "Basic example"
+                              }
+                            },
+                            [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-success",
+                                  attrs: {
+                                    type: "button",
+                                    disabled: test.is_running
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.start(test)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                      Start\n                      "
+                                  ),
+                                  test.is_running
+                                    ? _c("div", {
+                                        staticClass:
+                                          "spinner-border spinner-border-sm",
+                                        attrs: { role: "status" }
+                                      })
+                                    : _vm._e()
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  attrs: {
+                                    type: "button",
+                                    disabled: !test.is_running
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.stop(test)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                      Stop\n                    "
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(test.status))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(test.hits))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(test.duration))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(test.speed))])
+                      ])
+                    }),
+                    0
                   )
                 ])
               ])
             ])
           ])
         ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [_vm._v("Tests")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("table", { staticClass: "table" }, [
-              _vm._m(1),
-              _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.tests, function(test) {
-                  return _c("tr", { key: test.id }, [
-                    _c("th", { attrs: { scope: "row" } }, [
-                      _vm._v(_vm._s(test.id))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(test.name))]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: test.rate,
-                            expression: "test.rate"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "number",
-                          placeholder: "Rate...",
-                          step: "1",
-                          min: "1"
-                        },
-                        domProps: { value: test.rate },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(test, "rate", $event.target.value)
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "btn-group",
-                          attrs: {
-                            role: "group",
-                            "aria-label": "Basic example"
-                          }
-                        },
-                        [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-success",
-                              attrs: {
-                                type: "button",
-                                disabled: test.is_running
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.start(test)
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                      Start\n                      "
-                              ),
-                              test.is_running
-                                ? _c("div", {
-                                    staticClass:
-                                      "spinner-border spinner-border-sm",
-                                    attrs: { role: "status" }
-                                  })
-                                : _vm._e()
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-danger",
-                              attrs: {
-                                type: "button",
-                                disabled: !test.is_running
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.stop(test)
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                      Stop\n                    "
-                              )
-                            ]
-                          )
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(test.status))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(test.hits))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(test.duration))])
-                  ])
-                }),
-                0
-              )
-            ])
-          ])
-        ])
-      ])
-    ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -38017,9 +38195,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Name")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [
-          _vm._v("Rate (Hits per second)")
-        ]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Rate (Hits per sec)")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }),
         _vm._v(" "),
@@ -38027,7 +38203,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Hits")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Duration (ms)")])
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Duration (sec)")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Hits per sec")])
       ])
     ])
   }
@@ -50266,7 +50444,8 @@ try {
 
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'; //window.axios.defaults.withCredentials = true;
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

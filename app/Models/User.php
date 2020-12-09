@@ -20,7 +20,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'token'
+        'token',
+        'endpoint_webapp',
+        'endpoint_msms',
+        'endpoint_msas',
     ];
 
     /**

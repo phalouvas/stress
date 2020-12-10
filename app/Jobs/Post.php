@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use Cache;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -48,10 +48,11 @@ class Post implements ShouldQueue
     public function handle()
     {
         $test = Cache::get('rec_' . $this->test_id);
+        $endpoint = auth()->user()->{$test['environment']} . $test['path'];
         while ($test['is_running']) {
             $start = microtime(true);
             $response = Http::withToken($this->token)
-                ->post($test['endpoint'], $test['payload']);
+                ->post($endpoint, json_decode($test['payload'], true));
             $test = Cache::get('rec_' . $this->test_id);
             $test['status'] = $response->status();
             $test['hits'] += 1;

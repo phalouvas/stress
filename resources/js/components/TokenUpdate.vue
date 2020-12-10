@@ -75,8 +75,8 @@
           </div>
           <div class="card-footer">
               <button
-                    id="updateToken"
-                    name="updateToken"
+                    id="updateUser"
+                    name="updateUser"
                     class="btn btn-primary"
                     v-on:click="update"
                   >
@@ -132,11 +132,11 @@
                         type="button"
                         class="btn btn-success"
                         v-on:click="start(test)"
-                        :disabled="test.is_running"
+                        :disabled="test.is_running == 1"
                       >
                         Start
                         <div
-                          v-if="test.is_running"
+                          v-if="test.is_running == 1"
                           class="spinner-border spinner-border-sm"
                           role="status"
                         ></div>
@@ -175,27 +175,6 @@ export default {
     };
   },
 
-  computed: {
-    endpoint_webapp: function () {
-      if (this.user.id == 0) {
-          return null;
-      }
-      return this.user.endpoint_webapp;
-    },
-    endpoint_msms: function () {
-      if (this.user.id == 0) {
-          return null;
-      }
-      return this.user.endpoint_msms;
-    },
-    endpoint_msas: function () {
-      if (this.user.id == 0) {
-          return null;
-      }
-      return this.user.endpoint_msas;
-    },
-  },
-
   mounted() {
     this.load();
   },
@@ -206,8 +185,8 @@ export default {
       axios
         .get(`token/show`)
         .then((res) => {
-          this.user = res.data;
-          this.setTests();
+          this.user = res.data.user;
+          this.tests = res.data.tests;
         })
         .catch((error) => {
           //
@@ -215,81 +194,6 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
-    },
-
-    setTests() {
-        this.tests = [
-        {
-          id: 0,
-          name: "Get Balance",
-          rate: 1,
-          type: "get",
-          endpoint: `${this.endpoint_msas}/api/balance`,
-          is_running: false,
-          status: null,
-          hits: 0,
-          duration: 0,
-          speed: 0,
-          timer: null,
-          payload: {},
-        },
-        {
-          id: 1,
-          name: "Verify Number",
-          rate: 1,
-          type: "post",
-          endpoint: `${this.endpoint_webapp}/api/v1/verify/number`,
-          is_running: false,
-          status: null,
-          hits: 0,
-          duration: 0,
-          speed: 0,
-          timer: null,
-          payload: { to: "+35799000000" },
-        },
-        {
-          id: 2,
-          name: "Get Lists",
-          rate: 1,
-          type: "get",
-          endpoint: `${this.endpoint_webapp}/v1/people/lists`,
-          is_running: false,
-          status: null,
-          hits: 0,
-          duration: 0,
-          speed: 0,
-          timer: null,
-          payload: { },
-        },
-        {
-          id: 3,
-          name: "Create a new list",
-          rate: 1,
-          type: "post",
-          endpoint: `${this.endpoint_webapp}/v1/people/lists/create`,
-          is_running: false,
-          status: null,
-          hits: 0,
-          duration: 0,
-          speed: 0,
-          timer: null,
-          payload: { name: "Stress", description: "For stress test" },
-        },
-        {
-          id: 4,
-          name: "Get messages",
-          rate: 1,
-          type: "get",
-          endpoint: `${this.endpoint_msms}/messages`,
-          is_running: false,
-          status: null,
-          hits: 0,
-          duration: 0,
-          speed: 0,
-          timer: null,
-          payload: {  },
-        }
-      ];
     },
 
     update() {
@@ -312,10 +216,10 @@ export default {
       axios
         .post('start', test)
         .then((res) => {
-          this.tests[test.id].status = res.status;
+          test.status = res.status;
         })
         .catch((error) => {
-          this.tests[test.id].status = error;
+          test.status = error;
         })
         .finally(() => {
             //
@@ -332,10 +236,10 @@ export default {
       axios
         .post('stop', test)
         .then((res) => {
-          this.tests[test.id].status = res.status;
+          //
         })
         .catch((error) => {
-          this.tests[test.id].status = error;
+          test.status = error;
         })
         .finally(() => {
             //
@@ -346,18 +250,18 @@ export default {
         axios
         .post('status', test)
         .then((res) => {
-          this.tests[test.id].status = res.data.status;
-          this.tests[test.id].duration = res.data.duration;
-          this.tests[test.id].speed = res.data.hits - this.tests[test.id].hits;
-          this.tests[test.id].hits = res.data.hits;
+          test.status = res.data.status;
+          test.duration = res.data.duration;
+          test.speed = res.data.hits - test.hits;
+          test.hits = res.data.hits;
         })
         .catch((error) => {
-          this.tests[test.id].status = error;
+          test.status = error;
         })
         .finally(() => {
             //
         });
-    }
+    },
 
   },
 };

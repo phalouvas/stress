@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\Get;
 use App\Jobs\Post;
+use App\Models\Test;
 use App\Models\User as User;
 use Cache;
 use Illuminate\Http\Request;
@@ -31,11 +32,14 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function showToken() {
-        return auth()->user();
+    public function load() {
+        return response([
+            'user' => auth()->user(),
+            'tests' => Test::get()
+        ]);
     }
 
-    public function updateToken(Request $request) {
+    public function updateUser(Request $request) {
         $user = User::first();
         $user->token = $request->user['token'];
         $user->endpoint_webapp = $request->user['endpoint_webapp'];

@@ -20,8 +20,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/token/show', [App\Http\Controllers\HomeController::class, 'showToken']);
-Route::post('/token/update', [App\Http\Controllers\HomeController::class, 'updateToken']);
+Route::get('/token/show', [App\Http\Controllers\HomeController::class, 'load']);
+Route::post('/token/update', [App\Http\Controllers\HomeController::class, 'updateUser']);
 Route::middleware('auth')->post('/start', [App\Http\Controllers\HomeController::class, 'start'])->name('start');
 Route::middleware('auth')->post('/stop', [App\Http\Controllers\HomeController::class, 'stop'])->name('stop');
 Route::middleware('auth')->post('/status', [App\Http\Controllers\HomeController::class, 'status'])->name('status');

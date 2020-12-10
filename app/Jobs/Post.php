@@ -48,6 +48,9 @@ class Post implements ShouldQueue
     public function handle()
     {
         $test = Cache::get('rec_' . $this->test_id);
+        if ($test['name'] == 'Import contacts') {
+            return $this->importContacts($test);
+        }
         $endpoint = auth()->user()->{$test['environment']} . $test['path'];
         while ($test['is_running']) {
             $start = microtime(true);
@@ -63,4 +66,37 @@ class Post implements ShouldQueue
             usleep(1000000 / $test['rate']);
         }
     }
+
+    protected function importContacts(array $test)
+    {
+        $endpoint = auth()->user()->{$test['environment']} . $test['path'];
+        $response = Http::withToken($this->token)->get(auth()->user()->{$test['environment']} . '/v1/people/lists?name=Stress');
+        $payload = [
+            'user_lists' => json_encode([$response->json()['data'][0]]),
+            'upload_method' => true
+        ];
+
+        $phones = [];
+        $phone = 35794000000;
+        for ($i = 0; $i < 1000; $i++) {
+            $phones[] = ['phone' => '+' . $phone];
+            $phone++;
+        }
+        $payload['contacts'] = json_encode($phones);
+        $test['payload'] = $payload;
+
+        $start = microtime(true);
+        $response = Http::withToken($this->token)
+            ->post($endpoint, $test['payload']);
+        $test = Cache::get('rec_' . $this->test_id);
+        $test['status'] = $response->status();
+        $test['hits'] += 1;
+        $duration = microtime(true) - $start;
+        $test['duration'] = round($duration, 2);
+
+        Cache::put('rec_' . $test['id'], $test, now()->addDay());
+
+        return $test;
+    }
+
 }

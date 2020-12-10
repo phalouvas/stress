@@ -36,7 +36,7 @@ class TestSeeder extends Seeder
             'type' => "post",
             'environment' => 'endpoint_webapp',
             'path' => '/v1/people/lists/create',
-            'payload' => json_encode(['name' => 'Stress Test', 'description' => 'For stress test'])
+            'payload' => json_encode(['name' => 'Stress', 'description' => 'For stress test'])
         ]);
 
         Test::create([
@@ -44,6 +44,14 @@ class TestSeeder extends Seeder
             'type' => "get",
             'environment' => 'endpoint_webapp',
             'path' => '/v1/people/lists',
+        ]);
+
+        Test::create([
+            'name' => "Import contacts",
+            'type' => "post",
+            'environment' => 'endpoint_webapp',
+            'path' => '/v1/people/contacts/import',
+            'payload' => '{}'
         ]);
 
         Test::create([
@@ -66,6 +74,88 @@ class TestSeeder extends Seeder
             'type' => "get",
             'environment' => 'endpoint_msms',
             'path' => '/messages',
+        ]);
+
+        Test::create([
+            'name' => "Estimate Single Message",
+            'type' => "post",
+            'environment' => 'endpoint_msms',
+            'path' => '/sms/estimate',
+            'payload' => json_encode(['to' => '+35794000000', 'message' => 'Stress test single message.',])
+        ]);
+
+        Test::create([
+            'name' => "Send Single Message",
+            'type' => "post",
+            'environment' => 'endpoint_msms',
+            'path' => '/sms/send',
+            'payload' => json_encode(['to' => '+35794000000', 'message' => 'Stress test single message.',])
+        ]);
+
+        Test::create([
+            'name' => "Estimate Campaign",
+            'type' => "post",
+            'environment' => 'endpoint_msms',
+            'path' => '/sms/estimate',
+            'payload' => json_encode([
+                'message' => 'Stress test campaign.',
+                'to' => [
+                    '+35799000000',
+                    '35799000001'
+                ]
+            ])
+        ]);
+
+        Test::create([
+            'name' => "Send Campaign",
+            'type' => "post",
+            'environment' => 'endpoint_msms',
+            'path' => '/sms/send',
+            'payload' => json_encode([
+                'message' => 'Stress test campaign.',
+                'to' => [
+                    '+35799000000',
+                    '35799000001'
+                ]
+            ])
+        ]);
+
+        Test::create([
+            'name' => "Estimate Personalized Campaign",
+            'type' => "post",
+            'environment' => 'endpoint_msms',
+            'path' => '/sms/estimate',
+            'payload' => json_encode([
+                'messages' => [
+                    0 => [
+                        'to' => '+35794000000',
+                        'message' => 'Stress test personalized campaign'
+                    ],
+                    1 => [
+                        'to' => '+35794000001',
+                        'message' => 'Stress test personalized campaign'
+                    ],
+                ]
+            ])
+        ]);
+
+        Test::create([
+            'name' => "Send Personalized Campaign",
+            'type' => "post",
+            'environment' => 'endpoint_msms',
+            'path' => '/sms/send',
+            'payload' => json_encode([
+                'messages' => [
+                    0 => [
+                        'to' => '+3579000000',
+                        'message' => 'Stress test personalized campaign'
+                    ],
+                    1 => [
+                        'to' => '+35794000001',
+                        'message' => 'Stress test personalized campaign'
+                    ],
+                ]
+            ])
         ]);
     }
 }

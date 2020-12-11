@@ -26,3 +26,11 @@ The tests covered are the follow:
 - Send Campaign	
 - Estimate Personalized Campaign	
 - Send Personalized Campaign
+
+## Deploy process
+
+- clone this repository
+- copy .env.local to .env and set urls and db credentials
+- run command `composer install`
+- run command `php artisan migrate`
+- run command `php artisan db:seed`

@@ -34,3 +34,8 @@ The tests covered are the follow:
 - run command `composer install`
 - run command `php artisan migrate`
 - run command `php artisan db:seed`
+
+User credentials
+- admin@sms.to
+- fGZLthkXDHxLnr.4FrgC
+

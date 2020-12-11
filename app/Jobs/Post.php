@@ -51,6 +51,10 @@ class Post implements ShouldQueue
         if ($test['name'] == 'Import contacts') {
             return $this->importContacts($test);
         }
+        if ($test['name'] == 'Generate Access Token') {
+            return $this->generateAccessToken($test);
+        }
+
         $endpoint = auth()->user()->{$test['environment']} . $test['path'];
         while ($test['is_running']) {
             $start = microtime(true);
@@ -97,6 +101,26 @@ class Post implements ShouldQueue
         Cache::put('rec_' . $test['id'], $test, now()->addDay());
 
         return $test;
+    }
+
+    protected function generateAccessToken(array $test)
+    {
+        $endpoint = auth()->user()->{$test['environment']} . $test['path'];
+        $payload = json_decode($test['payload'], true);
+        $payload['client_id'] = auth()->user()->client_id;
+        $payload['secret'] = auth()->user()->secret;
+        while ($test['is_running']) {
+            $start = microtime(true);
+            $response = Http::post($endpoint, $payload);
+            $test = Cache::get('rec_' . $this->test_id);
+            $test['status'] = $response->status();
+            $test['hits'] += 1;
+            $duration = microtime(true) - $start;
+            $test['duration'] = round($duration, 2);
+
+            Cache::put('rec_' . $test['id'], $test, now()->addDay());
+            usleep(1000000 / $test['rate']);
+        }
     }
 
 }

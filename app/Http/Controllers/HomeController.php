@@ -42,6 +42,8 @@ class HomeController extends Controller
     public function updateUser(Request $request) {
         $user = User::first();
         $user->token = $request->user['token'];
+        $user->client_id = $request->user['client_id'];
+        $user->secret = $request->user['secret'];
         $user->endpoint_webapp = $request->user['endpoint_webapp'];
         $user->endpoint_msms = $request->user['endpoint_msms'];
         $user->endpoint_msas = $request->user['endpoint_msas'];

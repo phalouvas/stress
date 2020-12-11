@@ -49,6 +49,11 @@ class Get implements ShouldQueue
     {
         $test = Cache::get('rec_' . $this->test_id);
         $endpoint = auth()->user()->{$test['environment']} . $test['path'];
+
+        if ($test['name'] == 'Hit Shortlink') {
+            $endpoint = $this->hitShortlink($test);
+        }
+
         while ($test['is_running']) {
             $start = microtime(true);
             $response = Http::withToken($this->token)
@@ -62,5 +67,10 @@ class Get implements ShouldQueue
             Cache::put('rec_' . $test['id'], $test, now()->addDay());
             usleep(1000000 / $test['rate']);
         }
+    }
+
+    protected function hitShortlink($test) {
+        $response = Http::withToken($this->token)->get(auth()->user()->{$test['environment']} . $test['path']);
+        return auth()->user()->{$test['environment']} . '/l/' . $response->json()['data'][0]['shortlink'];
     }
 }

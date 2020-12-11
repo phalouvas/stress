@@ -17,8 +17,8 @@
 
           <div class="card-body">
             <div class="row">
-              <div class="col-4">
-                <label for="name">Token</label>
+              <div class="col">
+                <label for="token">Token</label>
                 <div class="input-group mb-3">
                   <input
                     v-model="user.token"
@@ -27,6 +27,32 @@
                     id="token"
                     name="token"
                     placeholder="Token..."
+                  />
+                </div>
+              </div>
+              <div class="col">
+                <label for="client_id">Client Id</label>
+                <div class="input-group mb-3">
+                  <input
+                    v-model="user.client_id"
+                    type="text"
+                    class="form-control"
+                    id="client_id"
+                    name="client_id"
+                    placeholder="Client Id..."
+                  />
+                </div>
+              </div>
+              <div class="col">
+                <label for="secret">Secret</label>
+                <div class="input-group mb-3">
+                  <input
+                    v-model="user.secret"
+                    type="text"
+                    class="form-control"
+                    id="secret"
+                    name="secret"
+                    placeholder="Secret..."
                   />
                 </div>
               </div>
@@ -239,7 +265,7 @@ export default {
           //
         })
         .catch((error) => {
-          test.status = error;
+          //test.status = error;
         })
         .finally(() => {
             //

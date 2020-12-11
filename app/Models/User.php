@@ -21,6 +21,8 @@ class User extends Authenticatable
         'email',
         'password',
         'token',
+        'client_id',
+        'secret',
         'endpoint_webapp',
         'endpoint_msms',
         'endpoint_msas',

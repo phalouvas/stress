@@ -1,0 +1,36 @@
+{
+    "listeners": {
+        "*:8080": {
+            "pass": "routes/laravel"
+        }
+    },
+
+    "routes": {
+        "laravel": [
+            {
+                "match": {
+                    "uri": "!/index.php"
+                },
+                "action": {
+                    "share": "/application/public/",
+                    "fallback": {
+                        "pass": "applications/laravel"
+                    }
+                }
+            }
+        ]
+    },
+
+    "applications": {
+        "laravel": {
+            "type": "php",
+            "user": "www-data",
+            "group": "www-data",
+            "processes": 10,
+            "root": "/application/public/",
+            "script": "index.php"
+        }
+    },
+
+    "access_log": "/var/log/unit/access.log"
+}

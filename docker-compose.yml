@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  smsto-stress:
+    container_name: "smsto-stress"
+    build: .
+    ports:
+      - "8080:8080"
+#    volumes:
+#      - ./code/:/application
+#    networks:
+#      - default
+#      - web-gateway
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "1"
+    restart: unless-stopped
+

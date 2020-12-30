@@ -29,13 +29,34 @@ The tests covered are the follow:
 
 ## Deploy process
 
-- clone this repository
-- copy file `.env.local` to `.env` and set urls and db credentials appropriately as per the webserver
-- run command `composer install`
-- run command `php artisan migrate`
-- run command `php artisan db:seed`
+### Build container
+```
+docker-compose build
+```
 
-User credentials
+### Start/stop container
+```
+docker-compose up -d   # Start
+docker-compose stop    # Stop
+```
+
+### Check logs
+```
+docker-compose logs --follow --tail=50 smsto-stress
+```
+
+In case you did any changes on code, migrations, etc you need to force rebuild the container:
+```
+docker-compose build --no-cache
+```
+
+### Access it on:
+```
+http://localhost:8080
+```
+
+### User credentials
+
 - admin@sms.to
 - fGZLthkXDHxLnr.4FrgC
 

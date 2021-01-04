@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
             'endpoint_webapp' => 'https://smsto.space',
-            'endopoint_msms' => 'https://api.smsto.space',
+            'endpoint_msms' => 'https://api.smsto.space',
             'endpoint_msas' => 'https://auth.smsto.space'
         ]);
     }

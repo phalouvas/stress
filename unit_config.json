@@ -26,6 +26,10 @@
             "type": "php",
             "user": "www-data",
             "group": "www-data",
+            "environment": {
+              "HTTPS": "on",
+              "HTTP_SCHEME": "https"
+            },
             "processes": 10,
             "root": "/application/public/",
             "script": "index.php"

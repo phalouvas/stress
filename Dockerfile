@@ -11,7 +11,7 @@ RUN apt-get update -y && apt-get install -y -q php7.3-cli php7.3-mysqli php7.3-j
     php7.3-xml php7.3-phar php7.3-intl php7.3-simplexml php7.3-zip php7.3-dom \
     php7.3-mbstring php7.3-xmlwriter php7.3-bcmath php7.3-tokenizer \
     php7.3-fileinfo php7.3-posix php7.3-ctype php7.3-exif php7.3-gd php7.3-iconv \
-    php7.3-xmlreader php7.3-json php7.3-sqlite3
+    php7.3-xmlreader php7.3-json php7.3-sqlite3 php7.3-apc
 
 
 # Install composer

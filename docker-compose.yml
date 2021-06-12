@@ -4,17 +4,26 @@ services:
   smsto-stress:
     container_name: "smsto-stress"
     build: .
-    ports:
-      - "8080:8080"
+#    ports:
+#      - "8080:8080"
+    networks:
+      - webgateway
 #    volumes:
 #      - ./code/:/application
-#    networks:
-#      - default
-#      - web-gateway
     logging:
       driver: "json-file"
       options:
         max-size: "5m"
         max-file: "1"
+    environment:
+      - ASSET_URL=https://smsto-stress.toolbox.intergo.co
+      - APP_URL=https://smsto-stress.toolbox.intergo.co
+      #- APP_URL=https://stress.local.intergo.co
     restart: unless-stopped
+    # Credentials
+    # username: admin@sms.to / password: fGZLthkXDHxLnr.4FrgC
 
+
+networks:
+  webgateway:
+    external: true

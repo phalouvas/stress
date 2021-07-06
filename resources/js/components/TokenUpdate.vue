@@ -18,7 +18,7 @@
           <div class="card-body">
             <div class="row">
               <div class="col">
-                <label for="token">Token</label>
+                <label for=npm>Token / API Key</label>
                 <div class="input-group mb-3">
                   <input
                     v-model="user.token"
